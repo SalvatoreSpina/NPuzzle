@@ -94,19 +94,22 @@ def parse_input_file(filepath):
             puzzle_size = None
             lines = input_file.readlines()
             for line in lines:
+                # Ignore everything after a '#'
+                line = line.split("#")[0]
+
                 values = []
                 tokens = line.split()
                 for token in tokens:
-                    if token[0] == "#":
-                        break
-                    if not token.isdigit():
-                        _handle_error(SyntaxError)
-                    if puzzle_size is None:
-                        puzzle_size = int(token)
-                        if not 0 <= puzzle_size <= 100:
-                            _handle_error(ValueError)
+                    if token.isdigit():
+                        num = int(token)
+                        if puzzle_size is None:
+                            puzzle_size = num
+                            if not 0 <= puzzle_size <= 100:
+                                _handle_error(ValueError)
+                        else:
+                            values.append(num)
                     else:
-                        values.append(int(token))
+                        _handle_error(SyntaxError)
                 if values:
                     start_state.append(values)
     except Exception as e:

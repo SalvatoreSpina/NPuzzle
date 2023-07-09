@@ -90,7 +90,7 @@ class Solver:
         start_state.parent = None
         self.get_heuristics(start_state, puzzle)
 
-        if self.args.filepath and not start_state.can_be_solved(puzzle):
+        if self.args.filepath and not start_state.can_puzzle_be_solved(puzzle):
             print("Can't be solved")
             sys.exit()
 

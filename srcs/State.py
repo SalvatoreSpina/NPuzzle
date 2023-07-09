@@ -31,41 +31,39 @@ class State:
                 if self.matrix[y][x] == 0:
                     return y, x
 
-    def can_be_solved(self, puzzle):
+    def can_puzzle_be_solved(self, puzzle):
         """
-        Check if the state can be solved based on the number of inversions.
+        Check if the current state of the puzzle can be solved.
+
+        This is based on the principle that a puzzle state is solvable if the 
+        number of inversions is even, considering also the distance of the empty 
+        space from the center of the puzzle.
 
         Args:
-            puzzle (Puzzle): The puzzle object representing the game.
+            puzzle (Puzzle): An instance of the Puzzle class representing the 
+                            current puzzle.
 
         Returns:
-            bool: True if the state can be solved, False otherwise.
+            bool: True if the puzzle can be solved, False otherwise.
         """
-        inversions = 0
-        for y in range(len(self.matrix)):
-            for x in range(len(self.matrix[y])):
-                if self.matrix[y][x] == 0:
-                    zero_row = y
-                    zero_col = x
-                for y2 in range(y, puzzle.size):
-                    start_x = x + 1 if y2 == y else 0
-                    for x2 in range(start_x, puzzle.size):
-                        if not (
-                            self.matrix[y2][x2] in puzzle.goal_array[(puzzle.goal[self.matrix[y][x]])[0]][
-                                puzzle.goal[self.matrix[y][x]]][1:]
-                        ) and not any(
-                            self.matrix[y2][x2]
-                            in row
-                            for row in puzzle.goal_array[(puzzle.goal[self.matrix[y][x]])[0] + 1 :][:]
-                        ):
-                            inversions += 1
 
-        if (
-            (inversions + puzzle.size) % 2
-            != (abs(puzzle.size // 2 - zero_col) + abs(puzzle.size // 2 - zero_row)) % 2
-        ):
-            return True
-        return False
+        total_inversions = 0
+        for row_index in range(len(self.matrix)):
+            for column_index, item in enumerate(self.matrix[row_index]):
+                if item == 0:
+                    zero_row = row_index
+                    zero_column = column_index
+                column_index_2, row_index_2 = column_index + 1, row_index
+                while row_index_2 < puzzle.size:
+                    while column_index_2 < puzzle.size:
+                        if not (self.matrix[row_index_2][column_index_2] in puzzle.goal_array[(puzzle.goal[item])[0]][puzzle.goal[item][1]:]) \
+                        and not any(self.matrix[row_index_2][column_index_2] in row for row in puzzle.goal_array[(puzzle.goal[item])[0]+1:][:]):
+                            total_inversions += 1
+                        column_index_2 += 1
+                    row_index_2 += 1
+                    column_index_2 = 0
+
+        return (total_inversions + puzzle.size) % 2 is not (abs(puzzle.size // 2 - zero_column) + abs(puzzle.size // 2 - zero_row)) % 2
 
     def get_neighbours(self, puzzle):
         """
