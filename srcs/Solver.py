@@ -30,10 +30,8 @@ class Solver:
                 state.h_misplaced = Heuristic.misplaced_tiles(state.matrix, puzzle.goal)
             if self.args.manhattan:
                 state.h_manhattan = Heuristic.manhattan_distance(state.matrix, puzzle.goal)
-            if self.args.euclidean:
-                state.h_euclidean = Heuristic.euclidean_distance(state.matrix, puzzle.goal)
 
-        state.h_total = state.h_misplaced + state.h_manhattan + state.h_euclidean
+        state.h_total = state.h_misplaced + state.h_manhattan
 
     def get_optimized_heuristics(self, state, puzzle):
         """
@@ -48,10 +46,8 @@ class Solver:
                 state.h_misplaced = Heuristic.misplaced_tile_single(state, puzzle.goal)
             if self.args.manhattan:
                 state.h_manhattan = Heuristic.manhattan_dist_single(state, puzzle.goal)
-            if self.args.euclidean:
-                state.h_euclidean = Heuristic.euclidean_dist_single(state, puzzle.goal)
 
-        state.h_total = state.h_misplaced + state.h_manhattan + state.h_euclidean
+        state.h_total = state.h_misplaced + state.h_manhattan
 
     def solve_puzzle(self):
         """

@@ -15,7 +15,6 @@ class State:
         self.h_total = 0
         self.h_misplaced = 0
         self.h_manhattan = 0
-        self.h_euclidean = 0
         self.g = 0
         self.zero_tile = self.find_zero()
 

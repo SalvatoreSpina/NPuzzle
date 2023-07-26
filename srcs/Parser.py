@@ -54,12 +54,6 @@ class Parser:
             help="use the Manhattan distance heuristic",
             action="store_true",
         )
-        self.parser.add_argument(
-            "--euclidean",
-            "-e",
-            help="use the Euclidean distance heuristic",
-            action="store_true",
-        )
 
     def parse_arguments(self):
         """
@@ -71,7 +65,7 @@ class Parser:
         args = self.parser.parse_args()
 
         # If no heuristic argument is provided, use Manhattan
-        if True not in (args.misplaced, args.manhattan, args.euclidean):
+        if True not in (args.misplaced, args.manhattan):
             args.manhattan = True
 
         return args
